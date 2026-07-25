@@ -1,10 +1,11 @@
-import {Component, inject, computed} from '@angular/core';
+import {Component, inject, computed, ChangeDetectionStrategy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BookService} from '../../services/book.service';
 
 @Component({
   selector: 'app-file-downloader',
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
       [disabled]="isDisabled()"

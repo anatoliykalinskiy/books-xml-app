@@ -1,4 +1,4 @@
-import {Component, inject, signal, viewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, signal, viewChild} from '@angular/core';
 import {ReaderXmlFile} from './components/file-reader/file-reader';
 import {BookDisplay} from './components/book-display/book-display';
 import {FileDownloader} from './components/file-downloader/file-downloader';
@@ -12,6 +12,7 @@ import {AuthService} from '../core/auth.service';
   standalone: true,
   imports: [ReaderXmlFile, BookDisplay, FileDownloader, BookForm],
   templateUrl: './dashboard.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Dashboard {
   public bookService = inject(BookService);

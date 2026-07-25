@@ -1,4 +1,4 @@
-import {Component, input, effect, signal, viewChild, ElementRef, output} from '@angular/core';
+import {Component, input, effect, signal, viewChild, ElementRef, output, ChangeDetectionStrategy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {form, FormField, required, min} from '@angular/forms/signals';
 import {Book, BookAction, BookActionPayloads} from '../../models/book.model';
@@ -9,6 +9,7 @@ type BookFormData = Omit<Book, 'id'>;
   selector: 'app-book-form',
   imports: [CommonModule, FormField],
   templateUrl: './book-form.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookForm {
   private dialogEl = viewChild.required<ElementRef<HTMLDialogElement>>('formDialog');

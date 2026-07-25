@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BookService} from '../../services/book.service';
 import {Book} from '../../models/book.model';
@@ -7,6 +7,7 @@ import {Book} from '../../models/book.model';
   selector: 'app-reader-xml-file',
   imports: [CommonModule],
   templateUrl: './file-reader.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReaderXmlFile {
   private bookService = inject(BookService);
