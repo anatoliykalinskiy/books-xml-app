@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let mockRouter = {
+  const mockRouter = {
     navigate: vi.fn()
   }
 
