@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FileReader } from './file-reader';
+import { ReaderXmlFile } from './file-reader';
 
-describe('FileReader', () => {
-  let component: FileReader;
-  let fixture: ComponentFixture<FileReader>;
+describe('ReaderXmlFile', () => {
+  let component: ReaderXmlFile;
+  let fixture: ComponentFixture<ReaderXmlFile>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileReader],
+      imports: [ReaderXmlFile],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FileReader);
+    fixture = TestBed.createComponent(ReaderXmlFile);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
