@@ -24,3 +24,23 @@ export function escapeXml(unsafe: string): string {
     }
   });
 }
+
+export const xsdSchema = `<?xml version="1.0" encoding="UTF-8"?>
+    <xs:schema xmlns:xs="http://w3.org">
+      <xs:element name="library">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="book" maxOccurs="unbounded" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="title" type="xs:string"/>
+                  <xs:element name="author" type="xs:string"/>
+                  <xs:element name="pages" type="xs:positiveInteger"/>
+                </xs:sequence>
+                <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>`;
