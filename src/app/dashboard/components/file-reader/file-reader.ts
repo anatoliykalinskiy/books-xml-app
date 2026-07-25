@@ -1,9 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {validateXML, XMLValidationError, XMLValidationResult} from 'xmllint-wasm';
 import {BookService} from '../../services/book.service';
 import {Book} from '../../models/book.model';
-import {xsdSchema} from '../../utils/book-utils';
 
 @Component({
   selector: 'app-reader-xml-file',
@@ -26,56 +24,50 @@ export class ReaderXmlFile {
       const xmlText = e.target?.result as string;
       const xmlDoc: Document = new DOMParser().parseFromString(xmlText, 'text/xml');
 
-      if (!this.validateXml(xmlDoc)) return;
+      if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+        alert('Failed to parse XML.');
+        return;
+      }
 
-      const validateResult = await this.validateXmlStructure(xmlText);
-
-      if (validateResult.valid) this.parseXml(xmlDoc);
+      this.parseXml(xmlDoc);
     };
 
     reader.readAsText(file);
   }
 
   private parseXml(xmlDoc: Document): void {
-    try {
-      const bookElements = xmlDoc.getElementsByTagName('book');
+    const bookElements = xmlDoc.getElementsByTagName('book');
 
-      const parsedBooks: Book[] = Array.from(bookElements).map(bookEl => ({
-        id: Number(bookEl.getAttribute('id') || 0),
-        title: bookEl.getElementsByTagName('title')?.[0]?.textContent || 'Untitled',
-        author: bookEl.getElementsByTagName('author')?.[0]?.textContent || 'Unknown',
-        pages: Number(bookEl.getElementsByTagName('pages')?.[0]?.textContent || 0)
-      }));
+    if (!bookElements || !bookElements.length) this.alertXmlParsError();
 
-      this.bookService.setBooks(parsedBooks);
+    const books: Book[] = [];
 
-    } catch (error) {
-      alert('Failed to parse XML. Please check the file structure.');
-    }
+    Array.from(bookElements).map(bookEl => {
+      const id = bookEl.getAttribute('id');
+      const title = bookEl.getElementsByTagName('title');
+      const author = bookEl.getElementsByTagName('author');
+      const pages = bookEl.getElementsByTagName('pages');
+
+      if (!id || !title || !author || !pages) {
+        this.alertXmlParsError();
+        return;
+      }
+
+      const book: Book =
+      {
+        id: Number(id || 0),
+        title: title[0]?.textContent || 'Untitled',
+        author: author[0]?.textContent || 'Unknown',
+        pages: Number(pages[0]?.textContent || 0)
+      }
+
+      books.push(book);
+    });
+
+    this.bookService.setBooks(books);
   }
 
-  private validateXml(xmlDoc: Document): boolean | undefined {
-    if (xmlDoc.getElementsByTagName('parsererror').length > 0) throw new Error("XML pars error");
-
-    return true;
-  }
-
-  private async validateXmlStructure(xmlContent: string): Promise<{ valid: boolean; errors: XMLValidationError[]  }> {
-    try {
-      const result: XMLValidationResult = await validateXML({
-        xml: xmlContent,
-        schema: xsdSchema
-      });
-
-      return {
-        valid: result.valid,
-        errors: []
-      };
-    } catch (error: any) {
-      return {
-        valid: false,
-        errors: [error?.message || 'Critical error parsing file']
-      };
-    }
+  alertXmlParsError() {
+    alert('Failed to parse XML. Please check the file structure.');
   }
 }
