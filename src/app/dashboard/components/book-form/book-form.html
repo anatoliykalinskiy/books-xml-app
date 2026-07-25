@@ -1,0 +1,44 @@
+<dialog
+  #formDialog
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 border-none rounded-xl p-6 shadow-2xl w-full max-w-md bg-white modal-dialog"
+>
+  <div class="flex justify-between items-center mb-5 border-b border-slate-100 pb-3">
+    <h3 class="m-0 text-lg font-bold text-slate-900">
+      {{ isEditMode() ? 'Edit Book (ID: ' + currentId() + ')' : 'Add New Book' }}
+    </h3>
+    <button type="button" (click)="onNativeDialogClosed(BookAction.None, null)"
+            class="bg-none border-none text-xl cursor-pointer text-slate-400 hover:text-slate-600 transition-colors">✕
+    </button>
+  </div>
+
+  <form (submit)="saveBook($event)">
+    <div class="flex flex-col mb-4">
+      <label class="font-semibold text-xs mb-1.5 text-slate-600">Title:</label>
+      <input type="text" [formField]="bookForm.title"
+             class="p-2.5 border border-slate-300 rounded-md text-sm text-slate-900 outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-600/15 transition-all"/>
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label class="font-semibold text-xs mb-1.5 text-slate-600">Author:</label>
+      <input type="text" [formField]="bookForm.author"
+             class="p-2.5 border border-slate-300 rounded-md text-sm text-slate-900 outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-600/15 transition-all"/>
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label class="font-semibold text-xs mb-1.5 text-slate-600">Pages:</label>
+      <input type="number" [formField]="bookForm.pages"
+             class="p-2.5 border border-slate-300 rounded-md text-sm text-slate-900 outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-600/15 transition-all"/>
+    </div>
+
+    <div class="flex gap-2.5 mt-6 justify-end">
+      <button type="submit" [disabled]="bookForm().invalid()"
+              class="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed text-white border-none px-5 py-2.5 rounded-md cursor-pointer font-semibold text-sm transition-colors">
+        {{ isEditMode() ? 'Save' : 'Add' }}
+      </button>
+      <button type="button" (click)="onNativeDialogClosed(BookAction.None, null)"
+              class="bg-white text-slate-700 border border-slate-300 px-5 py-2.5 rounded-md cursor-pointer font-medium text-sm hover:bg-slate-50 transition-colors">
+        Cancel
+      </button>
+    </div>
+  </form>
+</dialog>

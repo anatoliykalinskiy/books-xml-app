@@ -1,0 +1,25 @@
+<div class="flex justify-center items-center h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm border border-slate-200 text-center">
+    <h2 class="mt-0 text-slate-900 text-2xl font-bold mb-1">Sign In</h2>
+    <p class="text-sm text-slate-500 mb-6 leading-relaxed">
+      Administrator credentials are preset. Click Login to access
+      the full Dashboard.
+    </p>
+    <form (submit)="onSubmit($event)">
+      <div class="flex flex-col mb-4 text-left">
+        <label class="font-semibold text-xs mb-1 text-slate-600">Username:</label>
+        <input type="text" value="admin" readonly
+               class="p-2.5 border border-slate-200 rounded text-sm bg-slate-50 text-slate-500 cursor-not-allowed outline-none"/>
+      </div>
+      <div class="flex flex-col mb-4 text-left">
+        <label class="font-semibold text-xs mb-1 text-slate-600">Password:</label>
+        <input type="password" value="••••••••••••" readonly
+               class="p-2.5 border border-slate-200 rounded text-sm bg-slate-50 text-slate-500 cursor-not-allowed outline-none"/>
+      </div>
+      <button type="submit"
+              class="w-full p-2.5 bg-blue-600 hover:bg-blue-700 text-white border-none rounded font-bold text-sm mt-2 transition-colors cursor-pointer">
+        Login
+      </button>
+    </form>
+  </div>
+</div>

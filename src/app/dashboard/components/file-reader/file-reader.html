@@ -1,0 +1,11 @@
+<div class="inline-block">
+  <label class="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white font-semibold text-sm rounded-md shadow-sm hover:bg-blue-700 transition-colors cursor-pointer">
+    <span>Upload XML Library</span>
+    <input
+      type="file"
+      accept=".xml"
+      (change)="onFileSelected($event)"
+      class="hidden"
+    />
+  </label>
+</div>
