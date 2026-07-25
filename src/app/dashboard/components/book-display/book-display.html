@@ -1,0 +1,72 @@
+<div class="mt-4">
+  @if (bookService.books().length > 0) {
+    <div class="flex gap-3 mb-5 bg-slate-50 p-4 rounded-lg items-center border border-slate-200 shadow-sm">
+      <input type="text" [ngModel]="bookService.searchQuery()" (ngModelChange)="onSearchChanged($event)"
+             placeholder="Search by title..."
+             class="flex-1 p-2.5 bg-slate-50 border border-slate-300 rounded-md text-sm outline-none focus:border-blue-500 transition-colors"/>
+      <button (click)="onSortToggled()"
+              class="px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-md cursor-pointer font-medium text-sm text-slate-700 hover:bg-slate-100 transition-colors">
+        Sort (Author→Title): <strong class="font-bold">{{ getSortLabel() }}</strong>
+      </button>
+    </div>
+  }
+
+  <div class="overflow-x-auto bg-white border border-slate-200 rounded-lg shadow-sm">
+    <table class="w-full table-fixed border-collapse text-left text-sm">
+      <thead>
+      <tr class="bg-slate-200 text-slate-600 font-semibold text-xs uppercase tracking-wider">
+        <th class="p-3.5 border-b border-slate-200 w-16">ID</th>
+        <th class="p-3.5 border-b border-slate-200">Author</th>
+        <th class="p-3.5 border-b border-slate-200">Title</th>
+        <th class="p-3.5 border-b border-slate-200 w-24">Pages</th>
+        <th class="p-3.5 border-b border-slate-200 w-44">Actions</th>
+      </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200">
+        @for (book of bookService.paginatedBooks(); track book.id) {
+          <tr class="bg-slate-50 hover:bg-blue-200 transition-colors">
+            <td class="p-3.5 truncate">{{ book.id }}</td>
+            <td class="p-3.5 text-slate-600 truncate">{{ book.author }}</td>
+            <td class="p-3.5 font-semibold text-slate-900 truncate">{{ book.title }}</td>
+            <td class="p-3.5 text-slate-600 truncate">{{ book.pages }}</td>
+            <td class="p-3.5">
+              <div class="flex gap-1.5">
+                @if (!authService.isReadOnly()) {
+                  <button (click)="editRequest.emit(book)"
+                          class="bg-yellow-100 text-yellow-800 border border-yellow-200 px-3 py-1.5 rounded font-semibold text-xs hover:cursor-pointer hover:bg-yellow-200 transition-colors">
+                    Edit
+                  </button>
+                  <button (click)="onDeleteClicked(book.id)"
+                          class="bg-red-100 text-red-800 border border-red-200 px-3 py-1.5 rounded font-semibold text-xs hover:cursor-pointer hover:bg-red-200 transition-colors">
+                    Delete
+                  </button>
+                } @else {
+                  <span class="text-slate-400 text-xs italic">Locked</span>
+                }
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="text-center py-8 text-slate-400 font-normal italic">No records to display.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (bookService.filteredAndSortedBooks().length > 0) {
+    <div class="flex justify-center items-center gap-4 mt-6">
+      <button [disabled]="bookService.currentPage() === 1" (click)="onPageChanged(bookService.currentPage() - 1)"
+              class="px-4 py-2 bg-white border border-slate-300 rounded-md font-medium text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-40 hover:cursor-pointer disabled:cursor-not-allowed transition-all">
+        Prev
+      </button>
+      <span class="text-sm text-slate-500">Page {{ bookService.currentPage() }} of {{ bookService.totalPages() }} </span>
+      <button [disabled]="bookService.currentPage() === bookService.totalPages()"
+              (click)="onPageChanged(bookService.currentPage() + 1)"
+              class="px-4 py-2 bg-white border border-slate-300 rounded-md font-medium text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-40 hover:cursor-pointer disabled:cursor-not-allowed transition-all">
+        Next
+      </button>
+    </div>
+  }
+</div>

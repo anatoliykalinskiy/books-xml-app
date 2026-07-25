@@ -1,0 +1,29 @@
+<main class="p-5 font-sans antialiased h-screen">
+  <header class="flex justify-between items-center bg-slate-950 text-white px-6 py-3.5 rounded-lg mb-6 shadow-md">
+    <div class="flex items-center">
+      <span class="text-sm md:text-base">Welcome, <strong
+        class="font-bold text-blue-400">{{ authService.currentUser()?.username }}</strong>!</span>
+    </div>
+    <button (click)="authService.logout()"
+            class="bg-red-500 hover:bg-red-600 text-white border-none px-4 py-2 rounded-md cursor-pointer font-semibold text-xs md:text-sm transition-colors">
+      Logout
+    </button>
+  </header>
+
+  <div class="flex flex-wrap gap-4 items-center mb-6 bg-slate-50 px-6 py-4 rounded-lg border border-slate-200 shadow-sm">
+    <app-reader-xml-file></app-reader-xml-file>
+    <app-file-downloader></app-file-downloader>
+    @if (bookService.books().length > 0 && !authService.isReadOnly()) {
+      <button (click)="addBook()"
+              class="px-5 py-2.5 bg-blue-600 text-white border-none rounded-md cursor-pointer font-semibold text-sm sm:ml-auto hover:bg-blue-700 transition-colors shadow-sm">
+        + Create New Book
+      </button>
+    }
+  </div>
+
+  <app-book-form [bookToEdit]="selectedBook()"
+                 (formSubmitted)="executeAction($event.action, $event.payload)"></app-book-form>
+  <hr class="border-0 border-t border-slate-200 my-5"/>
+  <app-book-display (editRequest)="onEditRequested($event)"
+                    (deleteRequest)="executeAction($event.action, $event.payload)"></app-book-display>
+</main>
