@@ -1,5 +1,5 @@
 import { provideLocationMocks } from '@angular/common/testing';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { TestBed } from '@angular/core/testing';
 import { Location } from '@angular/common';
@@ -9,7 +9,6 @@ import { Dashboard } from './dashboard';
 
 describe('App Routing', () => {
   let harness: RouterTestingHarness;
-  let router: Router;
   let location: Location;
 
   beforeEach(async () => {
@@ -21,7 +20,6 @@ describe('App Routing', () => {
     });
 
     harness = await RouterTestingHarness.create();
-    router = TestBed.inject(Router);
     location = TestBed.inject(Location);
   });
 
