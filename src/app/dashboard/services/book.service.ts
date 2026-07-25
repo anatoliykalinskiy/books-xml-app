@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import {Injectable, signal, computed, debounced} from '@angular/core';
 import { Book, SortDirection } from '../models/book.model';
 import { createBookComparator, escapeXml } from '../utils/book-utils';
 
@@ -10,13 +10,14 @@ export class BookService {
   readonly books = this._books.asReadonly();
 
   readonly searchQuery = signal<string>('');
+  private readonly _debouncedQuery = debounced(this.searchQuery, 300);
   readonly sortDirection = signal<SortDirection>(SortDirection.None);
   readonly currentPage = signal<number>(1);
   readonly pageSize = signal<number>(5);
 
   readonly filteredAndSortedBooks = computed(() => {
     let result = [...this._books()];
-    const query = this.searchQuery().trim().toLowerCase();
+    const query = this._debouncedQuery.value().trim().toLowerCase();
     const direction = this.sortDirection();
 
     if (query) {

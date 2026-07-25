@@ -1,4 +1,4 @@
-import {Component, inject, output} from '@angular/core';
+import {Component, computed, inject, output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Book, SortDirection, BookAction, BookActionPayloads} from '../../models/book.model';
@@ -15,6 +15,7 @@ export class BookDisplay {
   public authService = inject(AuthService);
   editRequest = output<Book>();
   deleteRequest = output<{ action: BookAction.Delete; payload: BookActionPayloads[BookAction.Delete] }>();
+  books = computed(() => this.bookService.paginatedBooks());
 
   onDeleteClicked(id: number): void {
     this.deleteRequest.emit({action: BookAction.Delete, payload: id});
@@ -31,14 +32,28 @@ export class BookDisplay {
 
   onSortToggled(): void {
     const current = this.bookService.sortDirection();
-    if (current === SortDirection.None) this.bookService.sortDirection.set(SortDirection.Asc);
-    else if (current === SortDirection.Asc) this.bookService.sortDirection.set(SortDirection.Desc);
-    else this.bookService.sortDirection.set(SortDirection.None);
+
+    switch (true) {
+      case current === SortDirection.None:
+        this.bookService.sortDirection.set(SortDirection.Asc);
+        break;
+      case current === SortDirection.Asc:
+        this.bookService.sortDirection.set(SortDirection.Desc);
+        break;
+      default:
+        this.bookService.sortDirection.set(SortDirection.None);
+        break;
+    }
+
     this.bookService.resetPagination();
   }
 
   getSortLabel(): string {
     const current = this.bookService.sortDirection();
     return current === SortDirection.Asc ? 'A-Z ▲' : current === SortDirection.Desc ? 'Z-A ▼' : 'None';
+  }
+
+  searchQuery(): string {
+    return this.bookService.searchQuery();
   }
 }

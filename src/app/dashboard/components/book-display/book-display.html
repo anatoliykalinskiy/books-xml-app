@@ -1,7 +1,7 @@
 <div class="mt-4">
   @if (bookService.books().length > 0) {
     <div class="flex gap-3 mb-5 bg-slate-50 p-4 rounded-lg items-center border border-slate-200 shadow-sm">
-      <input type="text" [ngModel]="bookService.searchQuery()" (ngModelChange)="onSearchChanged($event)"
+      <input type="text" [ngModel]="searchQuery()" (ngModelChange)="onSearchChanged($event)"
              placeholder="Search by title..."
              class="flex-1 p-2.5 bg-slate-50 border border-slate-300 rounded-md text-sm outline-none focus:border-blue-500 transition-colors"/>
       <button (click)="onSortToggled()"
@@ -23,7 +23,7 @@
       </tr>
       </thead>
       <tbody class="divide-y divide-slate-200">
-        @for (book of bookService.paginatedBooks(); track book.id) {
+        @for (book of books(); track book.id) {
           <tr class="bg-slate-50 hover:bg-blue-200 transition-colors">
             <td class="p-3.5 truncate">{{ book.id }}</td>
             <td class="p-3.5 text-slate-600 truncate">{{ book.author }}</td>
