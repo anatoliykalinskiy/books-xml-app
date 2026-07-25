@@ -1,4 +1,4 @@
-import {Component, computed, inject, output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Book, SortDirection, BookAction, BookActionPayloads} from '../../models/book.model';
@@ -9,6 +9,7 @@ import {AuthService} from '../../../core/auth.service';
   selector: 'app-book-display',
   imports: [CommonModule, FormsModule],
   templateUrl: './book-display.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookDisplay {
   public bookService = inject(BookService);
